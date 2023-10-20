@@ -22,24 +22,24 @@ $vendedorId = '';
 //Ejecutar el código después de que el usuario envíe el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $numero = "1Hola";
-    $numero2 = 1;
-
     //Sanitizar
-    $resultado = filter_var($numero,FILTER_SANITIZE_NUMBER_INT);
+    // $resultado = filter_var($numero,FILTER_SANITIZE_NUMBER_INT);
 
-    $resultado = filter_var($numero2,FILTER_VALIDATE_INT);
+    // $resultado = filter_var($numero2,FILTER_VALIDATE_INT);
 
-    exit;
+    // exit;
 
-    $titulo =mysqli_real_escape_string($db,$_POST['titulo']);
-    $precio =mysqli_real_escape_string($db,$_POST['precio']);
-    $descripcion =mysqli_real_escape_string($db,$_POST['descripcion']);
-    $habitaciones =mysqli_real_escape_string($db,$_POST['habitaciones']);
-    $wc =mysqli_real_escape_string($db,$_POST['wc']);
-    $estacionamiento =mysqli_real_escape_string($db,$_POST['estacionamiento']);
-    $vendedorId =mysqli_real_escape_string($db,$_POST['vendedor']);
+    $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
+    $precio = mysqli_real_escape_string($db, $_POST['precio']);
+    $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
+    $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
+    $wc = mysqli_real_escape_string($db, $_POST['wc']);
+    $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
+    $vendedorId = mysqli_real_escape_string($db, $_POST['vendedor']);
     $creado = date('Y/m/d');
+
+    // Asignar files hacia una variable
+    $imagen = $_FILES['imagen'];
 
     if (!$titulo) {
         $errores[] = "Debes añadir un título.";
@@ -62,20 +62,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$vendedorId) {
         $errores[] = "Elige un vendedor.";
     }
+    if (!$imagen['name'] || $imagen['error']) {
+        $errores[] = "La imagen es obligatoria.";
+    }
+    //Validar por tamaño (1M máximo)
+    $medida = 1000 * 1000;
+
+    if ($imagen['size'] > $medida) {
+        $errores[] = "La imagen es muy pesada.";
+    }
 
     //Revisar que el array de errores está vacío
 
     if (empty($errores)) {
+        /** Subida de archivos */
+        //Crear carpeta
+        $carpetaImagenes = '../../imagenes/';
+        if (!is_dir($carpetaImagenes)) {
+            mkdir($carpetaImagenes);
+        }
+
+        //Generar un nombre único
+        $nombreImagen = md5(uniqid(rand(), true)). ".jpg";
+
+        //Subir la imagen
+        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+
+
         //Insertar en la base de datos
-        $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitaciones,
-        wc,estacionamiento,creado,vendedorID) VALUES ('$titulo','$precio','$descripcion','$habitaciones',
+        $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitaciones,
+        wc,estacionamiento,creado,vendedorID) VALUES ('$titulo','$precio','$nombreImagen','$descripcion','$habitaciones',
         '$wc','$estacionamiento','$creado','$vendedorId')";
 
         $resultado = mysqli_query($db, $query);
 
         if ($resultado) {
             // Redireccionar al usuario para evitar que dupliquen entradas
-            header("Location: /admin");
+            header('Location: /admin?resultado=1');
         }
     }
 }
@@ -94,7 +117,7 @@ incluirTemplate('header');
         </div>
     <?php endforeach; ?>
 
-    <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
+    <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
         <fieldset>
             <legend>Información General</legend>
 
@@ -105,7 +128,7 @@ incluirTemplate('header');
             <input type="number" id="precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
             <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen" accept="image/jpeg, image/png">
+            <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
 
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
@@ -129,7 +152,7 @@ incluirTemplate('header');
             <select name="vendedor">
                 <option value="''">-- Seleccione --</option>
                 <?php while ($vendedor = mysqli_fetch_assoc($resultado)) : ?>
-                    <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : '' ; ?>     value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre'] . " ". $vendedor['apellido']; ?></option>
+                    <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
                 <?php endwhile; ?>
             </select>
         </fieldset>

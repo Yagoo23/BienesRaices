@@ -67,7 +67,8 @@ a {
 abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
-  text-decoration: underline dotted; /* 2 */
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted; /* 2 */
 }
 
 /**
@@ -737,7 +738,8 @@ h4 {
   .seccion-inferior {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    column-gap: 2rem;
+    -moz-column-gap: 2rem;
+         column-gap: 2rem;
   }
 }
 .entrada-blog {
@@ -747,7 +749,8 @@ h4 {
   .entrada-blog {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    column-gap: 2rem;
+    -moz-column-gap: 2rem;
+         column-gap: 2rem;
   }
 }
 .entrada-blog:last-of-type {
@@ -891,6 +894,4 @@ table.propiedades thead th {
 }
 table.propiedades .imagen-tabla {
   width: 10rem;
-}
-
-/*# sourceMappingURL=app.css.map */
+}/*# sourceMappingURL=app.css.map */
