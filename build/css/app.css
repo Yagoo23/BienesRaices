@@ -376,6 +376,10 @@ h4 {
   justify-content: flex-end;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 .boton-amarillo {
   background-color: #E08709;
   color: #FFFFFF;
@@ -434,6 +438,7 @@ h4 {
   margin-top: 2.5rem;
   display: block;
   border: none;
+  width: 100%;
 }
 .boton-rojo-block:hover {
   background-color: #a40606;
@@ -466,7 +471,9 @@ h4 {
 .dark-mode h1,
 .dark-mode h2,
 .dark-mode h3,
-.dark-mode h4 {
+.dark-mode h4,
+.dark-mode td,
+.dark-mode p-anuncio {
   color: #e1e1e1;
 }
 .dark-mode .anuncio,
@@ -891,6 +898,10 @@ table.propiedades thead th {
 }
 table.propiedades .imagen-tabla {
   width: 10rem;
+}
+
+.imagen-small {
+  width: 20rem;
 }
 
 /*# sourceMappingURL=app.css.map */

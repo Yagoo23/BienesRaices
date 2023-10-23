@@ -28,8 +28,8 @@
                     </nav>
                 </div>
             </div> <!-- Cierra de la barra-->
-            <?php if($inicio){ ?>
-            <h1>Venta de casas y Pisos Exclusivos de Lujo</h1>
-            <?php } ?>
+            <?php
+            echo $inicio ? "<h1>Venta de Casas y Pisos Exclusivos de Lujo</h1>" : '';
+            ?>
         </div>
     </header>
