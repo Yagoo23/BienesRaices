@@ -16,8 +16,8 @@
             <legend>Información personal</legend>
             <label for="nombre">Nombre</label>
             <input type="text" placeholder="Tu nombre" id="nombre">
-            <label for="email">E-mail</label>
-            <input type="email" placeholder="Tu e-mail" id="email">
+            <label for="email">E-Mail</label>
+            <input type="email" placeholder="Tu E-Mail" id="email">
             <label for="telefono">Teléfono</label>
             <input type="tel" placeholder="Tu teléfono" id="telefono">
             <label for="mensaje">Mensaje</label>
