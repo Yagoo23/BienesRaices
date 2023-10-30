@@ -1,4 +1,12 @@
 <?php
+  require '../includes/funciones.php';
+  $auth = estaAutenticado();
+  
+  if(!$auth){
+      header('Location: /');
+  }
+  
+
 //Importar la conexión de la base de datos
 require '../includes/config/database.php';
 $db = conectarDB();
@@ -36,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 //Incluye un template
-require '../includes/funciones.php';
 incluirTemplate('header');
 ?>
 
