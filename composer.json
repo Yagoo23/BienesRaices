@@ -1,0 +1,18 @@
+{
+    "name": "yago/bienes-raices",
+    "description": "Creando un proyecto con POO",
+    "authors": [
+        {
+            "name": "Yagoo23",
+            "email": "correo@correo.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
