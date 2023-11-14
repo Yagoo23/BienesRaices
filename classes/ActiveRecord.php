@@ -39,7 +39,7 @@ class ActiveRecord
         // wc,estacionamiento,creado,vendedorID) VALUES ('$this->titulo','$this->precio','$this->imagen','$this->descripcion','$this->habitaciones',
         // '$this->wc','$this->estacionamiento','$this->creado','$this->vendedorID')";
 
-        $query = "INSERT INTO ". static::$tabla . " ( ";
+        $query = "INSERT INTO " . static::$tabla . " ( ";
         $query .= join(', ', array_keys($atributos));
         $query .= " ) VALUES (' ";
         $query .= join("', '", array_values($atributos));
@@ -58,7 +58,7 @@ class ActiveRecord
     {
 
         //Eliminar el registro
-        $query = "DELETE FROM ". static::$tabla . " where id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+        $query = "DELETE FROM " . static::$tabla . " where id = " . self::$db->escape_string($this->id) . " LIMIT 1";
         $resultado = self::$db->query($query);
 
         if ($resultado) {
@@ -76,7 +76,7 @@ class ActiveRecord
         foreach ($atributos as $key => $value) {
             $valores[] = "{$key} = '{$value}'";
         }
-        $query = "UPDATE ". static::$tabla ." SET ";
+        $query = "UPDATE " . static::$tabla . " SET ";
         $query .= join(', ', $valores);
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= "LIMIT 1 ";
@@ -154,10 +154,17 @@ class ActiveRecord
         return $resultado;
     }
 
+    // Obtiene un determinado número de registros
+    public static function get($cantidad)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad;
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
     //Busca un registro por su ID
     public static function find($id)
     {
-        $query = "SELECT * FROM ". static::$tabla ." where id=$id";
+        $query = "SELECT * FROM " . static::$tabla . " where id=$id";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }

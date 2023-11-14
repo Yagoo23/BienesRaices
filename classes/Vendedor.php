@@ -17,6 +17,23 @@ class Vendedor extends ActiveRecord{
         $this->apellido = $args['apellido'] ?? '';
         $this->telefono = $args['telefono'] ?? '';
     }
+
+    public function validar()
+    {
+        if (!$this->nombre) {
+            self::$errores[] = "El Nombre es obligatorio.";
+        }
+        if (!$this->apellido) {
+            self::$errores[] = "El Apellido es obligatorio.";
+        }
+        if (!$this->telefono) {
+            self::$errores[] = "El Teléfono es obligatorio.";
+        }
+        if(!preg_match('/[0-9]{9}/',$this->telefono)){
+            self::$errores[] = "Formato de teléfono no válido";
+        }
+        return self::$errores;
+    }
 }
 
 ?>
